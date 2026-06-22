@@ -5,6 +5,7 @@
     import PasswordInput from '@/components/PasswordInput.svelte';
     import TextLink from '@/components/TextLink.svelte';
     import { Button } from '@/components/ui/button';
+    import { t } from '@/lib/i18n';
     import { Input } from '@/components/ui/input';
     import { Label } from '@/components/ui/label';
     import { Spinner } from '@/components/ui/spinner';
@@ -13,11 +14,11 @@
     import { store } from '@/routes/register';
 </script>
 
-<AppHead title="Register" />
+<AppHead title={t('auth.register_page')} />
 
 <AuthBase
-    title="Create an account"
-    description="Enter your details below to create your account"
+    title={t('auth.register_title')}
+    description={t('auth.register_text')}
 >
     <Form
         {...store.form()}
@@ -27,20 +28,20 @@
         {#snippet children({ errors, processing })}
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">Name</Label>
+                    <Label for="name">{t('auth.name')}</Label>
                     <Input
                         id="name"
                         type="text"
                         required
                         autocomplete="name"
                         name="name"
-                        placeholder="Full name"
+                        placeholder={t('auth.full_name')}
                     />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">{t('auth.email_address')}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -53,25 +54,25 @@
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label for="password">{t('auth.password')}</Label>
                     <PasswordInput
                         id="password"
                         required
                         autocomplete="new-password"
                         name="password"
-                        placeholder="Password"
+                        placeholder={t('auth.password')}
                     />
                     <InputError message={errors.password} />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label for="password_confirmation">{t('auth.confirm_password')}</Label>
                     <PasswordInput
                         id="password_confirmation"
                         required
                         autocomplete="new-password"
                         name="password_confirmation"
-                        placeholder="Confirm password"
+                        placeholder={t('auth.confirm_password')}
                     />
                     <InputError message={errors.password_confirmation} />
                 </div>
@@ -83,14 +84,14 @@
                     data-test="register-user-button"
                 >
                     {#if processing}<Spinner />{/if}
-                    Create account
+                    {t('common.create_account')}
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
+                {t('auth.already_have_account')}
                 <TextLink href={login()} class="underline underline-offset-4">
-                    Log in
+                    {t('common.log_in')}
                 </TextLink>
             </div>
         {/snippet}

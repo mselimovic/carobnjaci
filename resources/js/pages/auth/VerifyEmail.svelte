@@ -3,6 +3,7 @@
     import AppHead from '@/components/AppHead.svelte';
     import TextLink from '@/components/TextLink.svelte';
     import { Button } from '@/components/ui/button';
+    import { t } from '@/lib/i18n';
     import { Spinner } from '@/components/ui/spinner';
     import AuthLayout from '@/layouts/AuthLayout.svelte';
     import { logout } from '@/routes';
@@ -15,16 +16,15 @@
     } = $props();
 </script>
 
-<AppHead title="Email verification" />
+<AppHead title={t('auth.verify_page')} />
 
 <AuthLayout
-    title="Verify email"
-    description="Please verify your email address by clicking on the link we just emailed to you."
+    title={t('auth.verify_title')}
+    description={t('auth.verify_text')}
 >
     {#if status === 'verification-link-sent'}
         <div class="mb-4 text-center text-sm font-medium text-green-600">
-            A new verification link has been sent to the email address you
-            provided during registration.
+            {t('auth.verification_sent')}
         </div>
     {/if}
 
@@ -32,11 +32,11 @@
         {#snippet children({ processing })}
             <Button type="submit" disabled={processing} variant="secondary">
                 {#if processing}<Spinner />{/if}
-                Resend verification email
+                {t('auth.resend_verification')}
             </Button>
 
             <TextLink href={logout()} as="button" class="mx-auto block text-sm">
-                Log out
+                {t('common.log_out')}
             </TextLink>
         {/snippet}
     </Form>

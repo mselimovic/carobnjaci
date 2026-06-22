@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { Link } from '@inertiajs/svelte';
     import {
         SidebarGroup,
         SidebarGroupContent,
@@ -28,18 +29,16 @@
                         asChild
                     >
                         {#snippet children(props)}
-                            <a
+                            <Link
                                 {...props}
                                 href={toUrl(item.href)}
-                                target="_blank"
-                                rel="noopener noreferrer"
                                 class={props.class}
                             >
                                 {#if item.icon}
                                     <item.icon class="size-4 shrink-0" />
                                 {/if}
                                 <span>{item.title}</span>
-                            </a>
+                            </Link>
                         {/snippet}
                     </SidebarMenuButton>
                 </SidebarMenuItem>

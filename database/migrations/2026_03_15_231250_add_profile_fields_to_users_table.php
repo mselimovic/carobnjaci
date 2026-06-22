@@ -27,6 +27,16 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn([
+                'username',
+                'avatar',
+                'bio',
+                'city',
+                'instagram',
+                'phone',
+                'is_admin',
+            ]);
+        });
     }
 };

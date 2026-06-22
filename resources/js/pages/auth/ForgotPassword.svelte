@@ -6,6 +6,7 @@
     import { Button } from '@/components/ui/button';
     import { Input } from '@/components/ui/input';
     import { Label } from '@/components/ui/label';
+    import { t } from '@/lib/i18n';
     import { Spinner } from '@/components/ui/spinner';
     import AuthLayout from '@/layouts/AuthLayout.svelte';
     import { login } from '@/routes';
@@ -18,11 +19,11 @@
     } = $props();
 </script>
 
-<AppHead title="Forgot password" />
+<AppHead title={t('auth.forgot_page')} />
 
 <AuthLayout
-    title="Forgot password"
-    description="Enter your email to receive a password reset link"
+    title={t('auth.forgot_title')}
+    description={t('auth.forgot_text')}
 >
     {#if status}
         <div class="mb-4 text-center text-sm font-medium text-green-600">
@@ -34,7 +35,7 @@
         <Form {...email.form()}>
             {#snippet children({ errors, processing })}
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">{t('auth.email_address')}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -53,15 +54,15 @@
                         data-test="email-password-reset-link-button"
                     >
                         {#if processing}<Spinner />{/if}
-                        Email password reset link
+                        {t('auth.email_reset_link')}
                     </Button>
                 </div>
             {/snippet}
         </Form>
 
         <div class="space-x-1 text-center text-sm text-muted-foreground">
-            <span>Or, return to</span>
-            <TextLink href={login()}>log in</TextLink>
+            <span>{t('auth.return_to')}</span>
+            <TextLink href={login()}>{t('common.log_in')}</TextLink>
         </div>
     </div>
 </AuthLayout>

@@ -8,6 +8,7 @@
         DropdownMenuLabel,
         DropdownMenuSeparator,
     } from '@/components/ui/dropdown-menu';
+    import { t } from '@/lib/i18n';
     import UserInfo from '@/components/UserInfo.svelte';
     import { toUrl } from '@/lib/utils';
     import { logout } from '@/routes';
@@ -44,7 +45,7 @@
                 onclick={props.onClick}
             >
                 <Settings class="mr-2 h-4 w-4" />
-                Settings
+                {t('user_menu.settings')}
             </Link>
         {/snippet}
     </DropdownMenuItem>
@@ -60,7 +61,7 @@
             data-test="logout-button"
         >
             <LogOut class="mr-2 h-4 w-4" />
-            Log out
+            {t('common.log_out')}
         </Link>
     {/snippet}
 </DropdownMenuItem>

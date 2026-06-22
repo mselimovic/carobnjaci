@@ -5,6 +5,7 @@
     import { Button } from '@/components/ui/button';
     import { Separator } from '@/components/ui/separator';
     import { currentUrlState } from '@/lib/currentUrl';
+    import { t } from '@/lib/i18n';
     import { toUrl } from '@/lib/utils';
     import { edit as editAppearance } from '@/routes/appearance';
     import { edit as editProfile } from '@/routes/profile';
@@ -19,15 +20,15 @@
 
     const sidebarNavItems: NavItem[] = [
         {
-            title: 'Profile',
+            title: t('settings.profile'),
             href: editProfile(),
         },
         {
-            title: 'Security',
+            title: t('settings.security'),
             href: editSecurity(),
         },
         {
-            title: 'Appearance',
+            title: t('settings.appearance'),
             href: editAppearance(),
         },
     ];
@@ -37,15 +38,15 @@
 
 <div class="px-4 py-6">
     <Heading
-        title="Settings"
-        description="Manage your profile and account settings"
+        title={t('settings.settings')}
+        description={t('settings.settings_text')}
     />
 
     <div class="flex flex-col lg:flex-row lg:space-x-12">
         <aside class="w-full max-w-xl lg:w-48">
             <nav
                 class="flex flex-col space-y-1 space-x-0"
-                aria-label="Settings"
+                aria-label={t('settings.settings')}
             >
                 {#each sidebarNavItems as item (toUrl(item.href))}
                     <Button

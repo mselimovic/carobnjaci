@@ -4,6 +4,7 @@
     import InputError from '@/components/InputError.svelte';
     import { Button } from '@/components/ui/button';
     import { Input } from '@/components/ui/input';
+    import { t } from '@/lib/i18n';
     import {
         InputOTP,
         InputOTPGroup,
@@ -19,18 +20,16 @@
     const authConfigContent: TwoFactorConfigContent = $derived.by(() => {
         if (showRecoveryInput) {
             return {
-                title: 'Recovery code',
-                description:
-                    'Please confirm access to your account by entering one of your emergency recovery codes.',
-                buttonText: 'login using an authentication code',
+                title: t('auth.recovery_code'),
+                description: t('auth.recovery_description'),
+                buttonText: t('auth.login_using_auth_code'),
             };
         }
 
         return {
-            title: 'Authentication code',
-            description:
-                'Enter the authentication code provided by your authenticator application.',
-            buttonText: 'login using a recovery code',
+            title: t('auth.auth_code'),
+            description: t('auth.auth_description'),
+            buttonText: t('auth.login_using_recovery_code'),
         };
     });
 
@@ -41,7 +40,7 @@
     }
 </script>
 
-<AppHead title="Two-factor authentication" />
+<AppHead title={t('auth.two_factor_page')} />
 
 <AuthLayout
     title={authConfigContent.title}
@@ -77,10 +76,10 @@
                         <InputError message={errors.code} />
                     </div>
                     <Button type="submit" class="w-full" disabled={processing}
-                        >Continue</Button
+                        >{t('common.continue')}</Button
                     >
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
+                        <span>{t('auth.or_you_can')} </span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
@@ -97,16 +96,16 @@
                     <Input
                         name="recovery_code"
                         type="text"
-                        placeholder="Enter recovery code"
+                        placeholder={t('auth.enter_recovery_code')}
                         required
                     />
                     <InputError message={errors.recovery_code} />
                     <Button type="submit" class="w-full" disabled={processing}
-                        >Continue</Button
+                        >{t('common.continue')}</Button
                     >
 
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
+                        <span>{t('auth.or_you_can')} </span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

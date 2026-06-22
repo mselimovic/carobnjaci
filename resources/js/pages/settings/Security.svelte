@@ -11,6 +11,7 @@
     import TwoFactorSetupModal from '@/components/TwoFactorSetupModal.svelte';
     import { Button } from '@/components/ui/button';
     import { Label } from '@/components/ui/label';
+    import { t } from '@/lib/i18n';
     import AppLayout from '@/layouts/AppLayout.svelte';
     import SettingsLayout from '@/layouts/settings/Layout.svelte';
     import { twoFactorAuthState } from '@/lib/twoFactorAuth.svelte';
@@ -30,7 +31,7 @@
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Security settings',
+            title: t('settings.security_page'),
             href: edit(),
         },
     ];
@@ -41,17 +42,17 @@
     onDestroy(() => twoFactorAuth.clearTwoFactorAuthData());
 </script>
 
-<AppHead title="Security settings" />
+<AppHead title={t('settings.security_page')} />
 
 <AppLayout {breadcrumbs}>
-    <h1 class="sr-only">Security settings</h1>
+    <h1 class="sr-only">{t('settings.security_page')}</h1>
 
     <SettingsLayout>
         <div class="space-y-6">
             <Heading
                 variant="small"
-                title="Update password"
-                description="Ensure your account is using a long, random password to stay secure"
+                title={t('settings.update_password')}
+                description={t('settings.update_password_text')}
             />
 
             <Form
@@ -67,39 +68,39 @@
             >
                 {#snippet children({ errors, processing, recentlySuccessful })}
                     <div class="grid gap-2">
-                        <Label for="current_password">Current password</Label>
+                        <Label for="current_password">{t('auth.current_password')}</Label>
                         <PasswordInput
                             id="current_password"
                             name="current_password"
                             class="mt-1 block w-full"
                             autocomplete="current-password"
-                            placeholder="Current password"
+                            placeholder={t('auth.current_password')}
                         />
                         <InputError message={errors.current_password} />
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="password">New password</Label>
+                        <Label for="password">{t('auth.new_password')}</Label>
                         <PasswordInput
                             id="password"
                             name="password"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
-                            placeholder="New password"
+                            placeholder={t('auth.new_password')}
                         />
                         <InputError message={errors.password} />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="password_confirmation"
-                            >Confirm password</Label
+                            >{t('auth.confirm_password')}</Label
                         >
                         <PasswordInput
                             id="password_confirmation"
                             name="password_confirmation"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
-                            placeholder="Confirm password"
+                            placeholder={t('auth.confirm_password')}
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
@@ -110,11 +111,11 @@
                             disabled={processing}
                             data-test="update-password-button"
                         >
-                            Save password
+                            {t('settings.save_password')}
                         </Button>
 
                         {#if recentlySuccessful}
-                            <p class="text-sm text-neutral-600">Saved.</p>
+                            <p class="text-sm text-neutral-600">{t('common.saved')}</p>
                         {/if}
                     </div>
                 {/snippet}
@@ -125,8 +126,8 @@
             <div class="space-y-6">
                 <Heading
                     variant="small"
-                    title="Two-factor authentication"
-                    description="Manage your two-factor authentication settings"
+                    title={t('settings.two_factor')}
+                    description={t('settings.two_factor_text')}
                 />
 
                 {#if !twoFactorEnabled}

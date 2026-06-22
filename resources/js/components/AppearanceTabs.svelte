@@ -3,6 +3,7 @@
     import Moon from 'lucide-svelte/icons/moon';
     import Sun from 'lucide-svelte/icons/sun';
     import type { Component, SvelteComponent } from 'svelte';
+    import { t } from '@/lib/i18n';
     import { themeState } from '@/lib/theme.svelte';
     import type { Appearance } from '@/types';
 
@@ -13,9 +14,9 @@
         | (new (...args: any[]) => SvelteComponent<{ class?: string }>);
 
     const tabs: { value: Appearance; Icon: IconComponent; label: string }[] = [
-        { value: 'light', Icon: Sun, label: 'Light' },
-        { value: 'dark', Icon: Moon, label: 'Dark' },
-        { value: 'system', Icon: Monitor, label: 'System' },
+        { value: 'light', Icon: Sun, label: t('settings.light') },
+        { value: 'dark', Icon: Moon, label: t('settings.dark') },
+        { value: 'system', Icon: Monitor, label: t('settings.system') },
     ];
 
     function handleAppearanceChange(value: Appearance) {

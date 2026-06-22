@@ -8,6 +8,7 @@
     import { Checkbox } from '@/components/ui/checkbox';
     import { Input } from '@/components/ui/input';
     import { Label } from '@/components/ui/label';
+    import { t } from '@/lib/i18n';
     import { Spinner } from '@/components/ui/spinner';
     import AuthBase from '@/layouts/AuthLayout.svelte';
     import { register } from '@/routes';
@@ -25,11 +26,11 @@
     } = $props();
 </script>
 
-<AppHead title="Log in" />
+<AppHead title={t('auth.login_page')} />
 
 <AuthBase
-    title="Log in to your account"
-    description="Enter your email and password below to log in"
+    title={t('auth.login_title')}
+    description={t('auth.login_text')}
 >
     {#if status}
         <div class="mb-4 text-center text-sm font-medium text-green-600">
@@ -45,7 +46,7 @@
         {#snippet children({ errors, processing })}
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">{t('auth.email_address')}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -59,10 +60,10 @@
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
+                        <Label for="password">{t('auth.password')}</Label>
                         {#if canResetPassword}
                             <TextLink href={request()} class="text-sm">
-                                Forgot password?
+                                {t('auth.forgot_password_link')}
                             </TextLink>
                         {/if}
                     </div>
@@ -71,7 +72,7 @@
                         name="password"
                         required
                         autocomplete="current-password"
-                        placeholder="Password"
+                        placeholder={t('auth.password')}
                     />
                     <InputError message={errors.password} />
                 </div>
@@ -79,7 +80,7 @@
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
                         <Checkbox id="remember" name="remember" />
-                        <span>Remember me</span>
+                        <span>{t('auth.remember_me')}</span>
                     </Label>
                 </div>
 
@@ -90,14 +91,14 @@
                     data-test="login-button"
                 >
                     {#if processing}<Spinner />{/if}
-                    Log in
+                    {t('common.log_in')}
                 </Button>
             </div>
 
             {#if canRegister}
                 <div class="text-center text-sm text-muted-foreground">
-                    Don't have an account?
-                    <TextLink href={register()}>Sign up</TextLink>
+                    {t('auth.dont_have_account')}
+                    <TextLink href={register()}>{t('auth.sign_up')}</TextLink>
                 </div>
             {/if}
         {/snippet}

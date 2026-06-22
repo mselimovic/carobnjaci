@@ -1,10 +1,14 @@
 <script lang="ts">
     import { Link } from '@inertiajs/svelte';
-    import BookOpen from 'lucide-svelte/icons/book-open';
-    import FolderGit2 from 'lucide-svelte/icons/folder-git-2';
+    import Cog from 'lucide-svelte/icons/cog';
     import LayoutGrid from 'lucide-svelte/icons/layout-grid';
+    import MessageCircle from 'lucide-svelte/icons/message-circle';
+    import Package2 from 'lucide-svelte/icons/package-2';
+    import Store from 'lucide-svelte/icons/store';
+    import Sparkles from 'lucide-svelte/icons/sparkles';
     import type { Snippet } from 'svelte';
     import AppLogo from '@/components/AppLogo.svelte';
+    import { t } from '@/lib/i18n';
     import NavFooter from '@/components/NavFooter.svelte';
     import NavMain from '@/components/NavMain.svelte';
     import NavUser from '@/components/NavUser.svelte';
@@ -29,22 +33,42 @@
 
     const mainNavItems: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: t('common.dashboard'),
             href: dashboard(),
             icon: LayoutGrid,
+        },
+        {
+            title: t('creator.nav_shop'),
+            href: '/creator/shop',
+            icon: Store,
+        },
+        {
+            title: t('creator.nav_products'),
+            href: '/creator/products',
+            icon: Package2,
+        },
+        {
+            title: t('creator.nav_messages'),
+            href: '/creator/messages',
+            icon: MessageCircle,
+        },
+        {
+            title: t('creator.nav_settings'),
+            href: '/creator/settings',
+            icon: Cog,
         },
     ];
 
     const footerNavItems: NavItem[] = [
         {
-            title: 'Repository',
-            href: 'https://github.com/laravel/svelte-starter-kit',
-            icon: FolderGit2,
+            title: t('creator.nav_storefront'),
+            href: '/',
+            icon: Sparkles,
         },
         {
-            title: 'Documentation',
-            href: 'https://laravel.com/docs/starter-kits#svelte',
-            icon: BookOpen,
+            title: t('creator.nav_security'),
+            href: '/settings/security',
+            icon: Cog,
         },
     ];
 </script>
