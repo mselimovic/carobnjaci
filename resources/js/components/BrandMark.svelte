@@ -11,7 +11,7 @@
         src="/brand/logo.png"
         alt="Carobnjaci"
         class={compact
-            ? 'h-14 w-auto max-w-[180px] object-contain sm:h-16 sm:max-w-[220px]'
-            : 'h-20 w-auto max-w-[260px] object-contain sm:h-24 sm:max-w-[320px] xl:h-28 xl:max-w-[380px]'}
+            ? 'h-16 w-auto max-w-[200px] object-contain sm:h-18 sm:max-w-[240px]'
+            : 'h-22 w-auto max-w-[290px] object-contain sm:h-26 sm:max-w-[360px] xl:h-30 xl:max-w-[420px]'}
     />
 </div>

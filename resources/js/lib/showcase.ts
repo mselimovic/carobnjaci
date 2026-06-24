@@ -187,7 +187,7 @@ export const featuredProducts: FeaturedProduct[] = [
         category: 'Woodwork',
         priceLabel: '78 EUR',
         image: '/placeholders/hero-handmade.jpg',
-        accent: 'bg-[#5603AD]',
+        accent: 'bg-primary',
         shortDescription: 'A warm wooden keepsake box for letters, jewelry, and small treasured objects.',
         description:
             'This handmade keepsake box is built for gifting and personal storage, with a soft finish, practical interior, and a crafted look that feels timeless rather than trendy.',
@@ -209,7 +209,7 @@ export const featuredProducts: FeaturedProduct[] = [
         category: 'Ceramics',
         priceLabel: 'Contact for price',
         image: '/placeholders/card-paper.jpg',
-        accent: 'bg-[#8367C7]',
+        accent: 'bg-accent',
         shortDescription: 'A softly shaped ceramic cup designed for tea, coffee, and slow mornings.',
         description:
             'Handbuilt in a small batch, this cup emphasizes tactile variation and quiet ritual. Each piece has small differences that make it feel unmistakably handmade.',
@@ -231,7 +231,7 @@ export const featuredProducts: FeaturedProduct[] = [
         category: 'Jewelry',
         priceLabel: '34 EUR',
         image: '/placeholders/card-pompoms.jpg',
-        accent: 'bg-[#C2F8CB]',
+        accent: 'bg-chart-3',
         shortDescription: 'Lightweight earrings with playful detail and an easy everyday silhouette.',
         description:
             'These earrings are designed to feel expressive without being heavy. They work equally well as a gift, an event accent, or an everyday jewelry piece.',
@@ -253,7 +253,7 @@ export const featuredProducts: FeaturedProduct[] = [
         category: 'Art',
         priceLabel: '46 EUR',
         image: '/placeholders/card-tree.jpg',
-        accent: 'bg-[#B3E9C7]',
+        accent: 'bg-chart-4',
         shortDescription: 'A vivid print for interiors that need a stronger artistic focal point.',
         description:
             'Printed in a limited small run, this artwork brings saturated color and organic linework into a room without feeling generic or overly polished.',

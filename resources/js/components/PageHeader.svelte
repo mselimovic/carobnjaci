@@ -13,14 +13,14 @@
 </script>
 
 <div class="max-w-2xl space-y-4">
-    <Badge class="bg-white px-4 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-[#5603AD] shadow-sm">
+    <Badge class="border border-border bg-card px-4 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary shadow-sm">
         {eyebrow}
     </Badge>
     <div class="space-y-3">
-        <h1 class="text-4xl font-bold tracking-tight text-[#24183d] sm:text-5xl">
+        <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             {title}
         </h1>
-        <p class="text-base leading-7 text-[#5d5470] sm:text-lg">
+        <p class="text-base leading-7 text-muted-foreground sm:text-lg">
             {description}
         </p>
     </div>

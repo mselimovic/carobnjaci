@@ -3,8 +3,14 @@
     import PageHeader from '@/components/PageHeader.svelte';
     import ProductCard from '@/components/ProductCard.svelte';
     import { t } from '@/lib/i18n';
-    import { featuredProducts } from '@/lib/showcase';
     import PublicLayout from '@/layouts/PublicLayout.svelte';
+    import type { ProductCardData } from '@/types/marketplace';
+
+    let {
+        products = [],
+    }: {
+        products: ProductCardData[];
+    } = $props();
 </script>
 
 <AppHead title={t('common.products')} />
@@ -18,7 +24,7 @@
         />
 
         <div class="grid gap-6 lg:grid-cols-2 xl:grid-cols-4">
-            {#each featuredProducts as product}
+            {#each products as product}
                 <ProductCard {product} />
             {/each}
         </div>

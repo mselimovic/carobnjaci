@@ -6,6 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shop extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'name',
+        'slug',
+        'specialty',
+        'description',
+        'bio',
+        'logo',
+        'cover_image',
+        'city',
+        'instagram',
+        'facebook',
+        'tiktok',
+        'website',
+        'phone',
+        'response_time',
+        'status',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

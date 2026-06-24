@@ -2,11 +2,13 @@
     import { Link } from '@inertiajs/svelte';
     import Cog from 'lucide-svelte/icons/cog';
     import LayoutGrid from 'lucide-svelte/icons/layout-grid';
+    import ShieldCheck from 'lucide-svelte/icons/shield-check';
     import MessageCircle from 'lucide-svelte/icons/message-circle';
     import Package2 from 'lucide-svelte/icons/package-2';
     import Store from 'lucide-svelte/icons/store';
     import Sparkles from 'lucide-svelte/icons/sparkles';
     import type { Snippet } from 'svelte';
+    import { page } from '@inertiajs/svelte';
     import AppLogo from '@/components/AppLogo.svelte';
     import { t } from '@/lib/i18n';
     import NavFooter from '@/components/NavFooter.svelte';
@@ -31,33 +33,62 @@
         children?: Snippet;
     } = $props();
 
-    const mainNavItems: NavItem[] = [
-        {
-            title: t('common.dashboard'),
-            href: dashboard(),
-            icon: LayoutGrid,
-        },
-        {
-            title: t('creator.nav_shop'),
-            href: '/creator/shop',
-            icon: Store,
-        },
-        {
-            title: t('creator.nav_products'),
-            href: '/creator/products',
-            icon: Package2,
-        },
-        {
-            title: t('creator.nav_messages'),
-            href: '/creator/messages',
-            icon: MessageCircle,
-        },
-        {
-            title: t('creator.nav_settings'),
-            href: '/creator/settings',
-            icon: Cog,
-        },
-    ];
+    const user = $derived($page.props.auth.user as { is_admin?: boolean } | undefined);
+
+    const mainNavItems = $derived.by<NavItem[]>(() => {
+        if (user?.is_admin) {
+            return [
+                {
+                    title: t('common.dashboard'),
+                    href: dashboard(),
+                    icon: LayoutGrid,
+                },
+                {
+                    title: t('creator.nav_messages'),
+                    href: '/creator/messages',
+                    icon: MessageCircle,
+                },
+                {
+                    title: t('creator.nav_settings'),
+                    href: '/creator/settings',
+                    icon: Cog,
+                },
+                {
+                    title: t('admin.nav_moderation'),
+                    href: '/admin',
+                    icon: ShieldCheck,
+                },
+            ];
+        }
+
+        return [
+            {
+                title: t('common.dashboard'),
+                href: dashboard(),
+                icon: LayoutGrid,
+            },
+            {
+                title: t('creator.nav_shop'),
+                href: '/creator/shop',
+                icon: Store,
+            },
+            {
+                title: t('creator.nav_products'),
+                href: '/creator/products',
+                icon: Package2,
+            },
+            {
+                title: t('creator.nav_messages'),
+                href: '/creator/messages',
+                icon: MessageCircle,
+            },
+            {
+                title: t('creator.nav_settings'),
+                href: '/creator/settings',
+                icon: Cog,
+            },
+        ];
+    });
 
     const footerNavItems: NavItem[] = [
         {

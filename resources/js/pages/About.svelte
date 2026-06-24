@@ -45,21 +45,21 @@
 <PublicLayout>
     <section class="grid gap-8 2xl:grid-cols-[0.92fr_1.08fr]">
         <div class="space-y-5">
-            <div class="inline-flex rounded-full border border-[#c9e8cf] bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#5603AD]">
+            <div class="theme-pill">
                 {t('about.eyebrow')}
             </div>
-            <h1 class="text-4xl font-bold tracking-tight text-[#24183d] lg:text-5xl 2xl:text-6xl">
+            <h1 class="text-4xl font-bold tracking-tight text-foreground lg:text-5xl 2xl:text-6xl">
                 {t('about.title')}
             </h1>
-            <p class="text-sm leading-7 text-[#5d5470]">
+            <p class="text-sm leading-7 text-muted-foreground">
                 {t('about.text_1')}
             </p>
-            <p class="text-sm leading-7 text-[#5d5470]">
+            <p class="text-sm leading-7 text-muted-foreground">
                 {t('about.text_2')}
             </p>
         </div>
 
-        <div class="overflow-hidden border border-[#d5e8d8] bg-white">
+        <div class="theme-panel overflow-hidden">
             <img
                 src="/placeholders/about-studio.avif"
                 alt="Creative studio workspace"
@@ -70,41 +70,41 @@
 
     <section class="mt-10 grid gap-4 md:grid-cols-3 xl:grid-cols-4">
         {#each featureCards as card}
-            <article class="border border-[#d5e8d8] bg-white p-5">
-                <div class="mb-4 flex size-10 items-center justify-center rounded-lg bg-[#f0fff1] text-[#5603AD]">
+            <article class="theme-panel p-5">
+                <div class="mb-4 flex size-10 items-center justify-center rounded-lg bg-secondary text-primary">
                     <svelte:component this={card.icon} class="size-5" />
                 </div>
-                <h2 class="text-base font-semibold text-[#24183d]">{card.title}</h2>
-                <p class="mt-3 text-sm leading-6 text-[#5d5470]">{card.body}</p>
+                <h2 class="text-base font-semibold text-foreground">{card.title}</h2>
+                <p class="mt-3 text-sm leading-6 text-muted-foreground">{card.body}</p>
             </article>
         {/each}
     </section>
 
     <section class="mt-10 grid gap-4 md:grid-cols-2">
         {#each stats as stat}
-            <article class="border border-[#d5e8d8] bg-white p-6">
-                <div class="text-3xl font-bold text-[#24183d]">{stat.value}</div>
-                <div class="mt-2 text-sm text-[#5d5470]">{stat.label}</div>
+            <article class="theme-panel p-6">
+                <div class="text-3xl font-bold text-foreground">{stat.value}</div>
+                <div class="mt-2 text-sm text-muted-foreground">{stat.label}</div>
             </article>
         {/each}
     </section>
 
     <section class="mt-10 grid gap-4 lg:grid-cols-3">
-        <article class="border border-[#d5e8d8] bg-white p-4">
+        <article class="theme-panel p-4">
             <img src="/placeholders/card-paper.jpg" alt="Paper handmade craft" class="aspect-[4/3] w-full object-cover" />
-            <div class="mt-4 text-sm leading-6 text-[#5d5470]">
+            <div class="mt-4 text-sm leading-6 text-muted-foreground">
                 {t('about.gallery_1')}
             </div>
         </article>
-        <article class="border border-[#d5e8d8] bg-white p-4">
+        <article class="theme-panel p-4">
             <img src="/placeholders/card-pompoms.jpg" alt="Colorful handmade craft" class="aspect-[4/3] w-full object-cover" />
-            <div class="mt-4 text-sm leading-6 text-[#5d5470]">
+            <div class="mt-4 text-sm leading-6 text-muted-foreground">
                 {t('about.gallery_2')}
             </div>
         </article>
-        <article class="border border-[#d5e8d8] bg-white p-4">
+        <article class="theme-panel p-4">
             <img src="/placeholders/card-tree.jpg" alt="Artwork" class="aspect-[4/3] w-full object-cover" />
-            <div class="mt-4 text-sm leading-6 text-[#5d5470]">
+            <div class="mt-4 text-sm leading-6 text-muted-foreground">
                 {t('about.gallery_3')}
             </div>
         </article>

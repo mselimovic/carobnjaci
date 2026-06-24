@@ -6,19 +6,17 @@
     import ProductCard from '@/components/ProductCard.svelte';
     import { t } from '@/lib/i18n';
     import PublicLayout from '@/layouts/PublicLayout.svelte';
-    import { featuredProducts, getFeaturedProduct, getFeaturedShop } from '@/lib/showcase';
+    import type { ProductCardData, ProductDetail, ShopSummary } from '@/types/marketplace';
 
     let {
-        slug,
+        product,
+        shop = null,
+        relatedProducts = [],
     }: {
-        slug: string;
+        product: ProductDetail;
+        shop?: ShopSummary | null;
+        relatedProducts: ProductCardData[];
     } = $props();
-
-    const product = $derived(getFeaturedProduct(slug) ?? featuredProducts[0]);
-    const shop = $derived(getFeaturedShop(product.shopSlug) ?? null);
-    const relatedProducts = $derived(
-        featuredProducts.filter((item) => product.relatedSlugs.includes(item.slug)),
-    );
 </script>
 
 <AppHead title={product.title} />
@@ -27,12 +25,12 @@
     <section class="space-y-10">
         <div class="grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
             <div class="space-y-4">
-                <div class="overflow-hidden border border-[#d5e8d8] bg-white">
+                <div class="theme-panel overflow-hidden">
                     <img src={product.gallery[0]} alt={product.title} class="aspect-[4/3] w-full object-cover" />
                 </div>
                 <div class="grid gap-4 sm:grid-cols-3">
                     {#each product.gallery.slice(1) as image}
-                        <div class="overflow-hidden border border-[#d5e8d8] bg-white">
+                        <div class="theme-panel overflow-hidden">
                             <img src={image} alt={product.title} class="aspect-[4/3] w-full object-cover" />
                         </div>
                     {/each}
@@ -41,50 +39,50 @@
 
             <div class="space-y-6">
                 <div class="space-y-3">
-                    <div class="inline-flex rounded-full border border-[#c9e8cf] bg-[#f0fff1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#5603AD]">
+                    <div class="theme-pill-soft">
                         {product.category}
                     </div>
-                    <h1 class="text-4xl font-bold tracking-tight text-[#24183d] lg:text-5xl">
+                    <h1 class="text-4xl font-bold tracking-tight text-foreground lg:text-5xl">
                         {product.title}
                     </h1>
-                    <p class="text-lg text-[#5603AD]">{product.priceLabel}</p>
-                    <p class="max-w-2xl text-base leading-8 text-[#5d5470]">
+                    <p class="text-lg text-primary">{product.priceLabel}</p>
+                    <p class="max-w-2xl text-base leading-8 text-muted-foreground">
                         {product.shortDescription}
                     </p>
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-3">
-                    <div class="border border-[#d5e8d8] bg-white p-4">
-                        <div class="flex items-center gap-2 text-sm font-semibold text-[#24183d]">
-                            <Store class="size-4 text-[#8367C7]" />
+                    <div class="theme-panel p-4">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                            <Store class="size-4 text-primary" />
                             {t('product.shop')}
                         </div>
-                        <div class="mt-2 text-sm text-[#5d5470]">{shop?.name ?? product.shop}</div>
+                        <div class="mt-2 text-sm text-muted-foreground">{shop?.name ?? ''}</div>
                     </div>
-                    <div class="border border-[#d5e8d8] bg-white p-4">
-                        <div class="flex items-center gap-2 text-sm font-semibold text-[#24183d]">
-                            <Clock3 class="size-4 text-[#8367C7]" />
+                    <div class="theme-panel p-4">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                            <Clock3 class="size-4 text-primary" />
                             {t('product.lead_time')}
                         </div>
-                        <div class="mt-2 text-sm text-[#5d5470]">{product.leadTime}</div>
+                        <div class="mt-2 text-sm text-muted-foreground">{product.leadTime}</div>
                     </div>
-                    <div class="border border-[#d5e8d8] bg-white p-4">
-                        <div class="flex items-center gap-2 text-sm font-semibold text-[#24183d]">
-                            <MapPin class="size-4 text-[#8367C7]" />
+                    <div class="theme-panel p-4">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                            <MapPin class="size-4 text-primary" />
                             {t('product.location')}
                         </div>
-                        <div class="mt-2 text-sm text-[#5d5470]">{product.location}</div>
+                        <div class="mt-2 text-sm text-muted-foreground">{product.location}</div>
                     </div>
                 </div>
 
-                <div class="space-y-4 border border-[#d5e8d8] bg-white p-6">
-                    <h2 class="text-xl font-semibold text-[#24183d]">{t('product.about_piece')}</h2>
-                    <p class="text-sm leading-7 text-[#5d5470]">{product.description}</p>
+                <div class="theme-panel space-y-4 p-6">
+                    <h2 class="text-xl font-semibold text-foreground">{t('product.about_piece')}</h2>
+                    <p class="text-sm leading-7 text-muted-foreground">{product.description}</p>
                     <div>
-                        <div class="text-sm font-semibold text-[#24183d]">{t('product.materials')}</div>
+                        <div class="text-sm font-semibold text-foreground">{t('product.materials')}</div>
                         <div class="mt-3 flex flex-wrap gap-2">
                             {#each product.materials as material}
-                                <span class="rounded-full border border-[#c9e8cf] bg-[#f0fff1] px-3 py-1 text-xs font-semibold text-[#5603AD]">
+                                <span class="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-primary">
                                     {material}
                                 </span>
                             {/each}
@@ -92,19 +90,19 @@
                     </div>
                 </div>
 
-                <ContactSellerCTA sellerName={shop?.name ?? product.shop} />
+                <ContactSellerCTA sellerName={shop?.name ?? ''} />
 
                 {#if shop}
-                    <div class="border border-[#d5e8d8] bg-white p-5">
+                    <div class="theme-panel p-5">
                         <div class="flex items-center gap-4">
-                            <img src={shop.logo} alt={shop.name} class="h-16 w-16 rounded-xl border border-[#d5e8d8] bg-white object-cover" />
+                            <img src={shop.logo} alt={shop.name} class="h-16 w-16 rounded-xl border border-border bg-card object-cover" />
                             <div class="space-y-1">
-                                <div class="text-lg font-semibold text-[#24183d]">{shop.name}</div>
-                                <div class="text-sm text-[#5d5470]">{shop.city}</div>
+                                <div class="text-lg font-semibold text-foreground">{shop.name}</div>
+                                <div class="text-sm text-muted-foreground">{shop.city}</div>
                             </div>
                         </div>
-                        <p class="mt-4 text-sm leading-7 text-[#5d5470]">{shop.description}</p>
-                        <Link href={`/shops/${shop.slug}`} class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#5603AD]">
+                        <p class="mt-4 text-sm leading-7 text-muted-foreground">{shop.description}</p>
+                        <Link href={`/shops/${shop.slug}`} class="theme-link mt-4 inline-flex items-center gap-2 text-sm">
                             {t('product.visit_shop')}
                             <ArrowRight class="size-4" />
                         </Link>
@@ -116,10 +114,10 @@
         <section class="space-y-6">
             <div class="flex items-end justify-between gap-4">
                 <div>
-                    <div class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8367C7]">{t('product.related_eyebrow')}</div>
-                    <h2 class="mt-2 text-3xl font-bold tracking-tight text-[#24183d]">{t('product.related_title')}</h2>
+                    <div class="text-xs font-semibold uppercase tracking-[0.16em] text-primary">{t('product.related_eyebrow')}</div>
+                    <h2 class="mt-2 text-3xl font-bold tracking-tight text-foreground">{t('product.related_title')}</h2>
                 </div>
-                <Link href="/products" class="hidden items-center gap-2 text-sm font-semibold text-[#5603AD] sm:inline-flex">
+                <Link href="/products" class="theme-link hidden items-center gap-2 text-sm sm:inline-flex">
                     {t('common.browse_all_products')}
                     <ArrowRight class="size-4" />
                 </Link>

@@ -3,8 +3,8 @@
     import AppHead from '@/components/AppHead.svelte';
     import PageHeader from '@/components/PageHeader.svelte';
     import { t } from '@/lib/i18n';
-    import { featuredCategories } from '@/lib/showcase';
     import PublicLayout from '@/layouts/PublicLayout.svelte';
+    import type { CategoryCard } from '@/types/marketplace';
 
     const iconMap = {
         Gem,
@@ -14,6 +14,12 @@
         Sparkles,
         Shirt,
     } as const;
+
+    let {
+        categories = [],
+    }: {
+        categories: CategoryCard[];
+    } = $props();
 </script>
 
 <AppHead title={t('common.categories')} />
@@ -27,21 +33,21 @@
         />
 
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {#each featuredCategories as category}
-                <article class="rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-[0_24px_60px_-40px_rgba(37,17,63,0.4)] backdrop-blur-sm">
-                    <div class="mb-5 flex size-14 items-center justify-center rounded-[1.2rem] bg-[#f4efff] text-[#6C3BFF]">
+            {#each categories as category}
+                <article class="theme-panel rounded-[1.75rem] p-6 shadow-[0_24px_60px_-40px_rgba(15,23,42,0.18)]">
+                    <div class="mb-5 flex size-14 items-center justify-center rounded-[1.2rem] bg-secondary text-primary">
                         <svelte:component this={iconMap[category.icon as keyof typeof iconMap]} class="size-6" />
                     </div>
                     <div class="space-y-3">
                         <div class="flex items-center justify-between gap-4">
-                            <h3 class="text-xl font-bold tracking-tight text-[#171321]">
+                            <h3 class="text-xl font-bold tracking-tight text-foreground">
                                 {category.name}
                             </h3>
-                            <span class="rounded-full bg-[#fff9f0] px-3 py-1 text-xs font-semibold text-[#6C3BFF]">
+                            <span class="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-primary">
                                 {category.countLabel}
                             </span>
                         </div>
-                        <p class="text-sm leading-6 text-[#6F687A]">
+                        <p class="text-sm leading-6 text-muted-foreground">
                             {category.description}
                         </p>
                     </div>
