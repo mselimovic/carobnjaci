@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { Link, router } from '@inertiajs/svelte';
+    import { Link, page, router } from '@inertiajs/svelte';
+    import MessageCircleMore from 'lucide-svelte/icons/message-circle-more';
     import LogOut from 'lucide-svelte/icons/log-out';
     import Settings from 'lucide-svelte/icons/settings';
     import {
@@ -21,6 +22,8 @@
         user: User;
     } = $props();
 
+    const notifications = $derived($page.props.notifications as { unreadMessages?: number } | undefined);
+
     function handleLogout(propsOnClick?: (event: MouseEvent) => void) {
         return (event: MouseEvent) => {
             propsOnClick?.(event);
@@ -36,6 +39,23 @@
 </DropdownMenuLabel>
 <DropdownMenuSeparator />
 <DropdownMenuGroup>
+    <DropdownMenuItem asChild>
+        {#snippet children(props)}
+            <Link
+                class={props.class}
+                href={user.is_admin ? '/creator/messages' : '/messages/inbox'}
+                onclick={props.onClick}
+            >
+                <MessageCircleMore class="mr-2 h-4 w-4" />
+                {t('creator.nav_messages')}
+                {#if notifications?.unreadMessages}
+                    <span class="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[11px] font-semibold text-primary-foreground">
+                        {notifications.unreadMessages}
+                    </span>
+                {/if}
+            </Link>
+        {/snippet}
+    </DropdownMenuItem>
     <DropdownMenuItem asChild>
         {#snippet children(props)}
             <Link

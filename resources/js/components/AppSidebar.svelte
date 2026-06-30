@@ -34,6 +34,7 @@
     } = $props();
 
     const user = $derived($page.props.auth.user as { is_admin?: boolean } | undefined);
+    const notifications = $derived($page.props.notifications as { unreadMessages?: number } | undefined);
 
     const mainNavItems = $derived.by<NavItem[]>(() => {
         if (user?.is_admin) {
@@ -47,6 +48,7 @@
                     title: t('creator.nav_messages'),
                     href: '/creator/messages',
                     icon: MessageCircle,
+                    badge: notifications?.unreadMessages ?? 0,
                 },
                 {
                     title: t('creator.nav_settings'),
@@ -81,6 +83,7 @@
                 title: t('creator.nav_messages'),
                 href: '/creator/messages',
                 icon: MessageCircle,
+                badge: notifications?.unreadMessages ?? 0,
             },
             {
                 title: t('creator.nav_settings'),

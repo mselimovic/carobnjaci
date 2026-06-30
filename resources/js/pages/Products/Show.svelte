@@ -90,7 +90,13 @@
                     </div>
                 </div>
 
-                <ContactSellerCTA sellerName={shop?.name ?? ''} />
+                <ContactSellerCTA
+                    sellerName={shop?.name ?? ''}
+                    shopId={shop?.id ?? 0}
+                    productId={product.id ?? null}
+                    sellerUserId={shop?.ownerId ?? null}
+                    subject={`${t('contact.product_subject_prefix')}: ${product.title}`}
+                />
 
                 {#if shop}
                     <div class="theme-panel p-5">

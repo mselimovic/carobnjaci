@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Snippet } from 'svelte';
     import { Link, page } from '@inertiajs/svelte';
-    import { Headset, LayoutGrid, MapPin, Menu, Search, Shapes, Store, UserRound } from 'lucide-svelte';
+    import { Headset, LayoutGrid, MapPin, Menu, MessageCircleMore, Search, Shapes, Store, UserRound } from 'lucide-svelte';
     import BrandMark from '@/components/BrandMark.svelte';
     import LanguageSwitcher from '@/components/LanguageSwitcher.svelte';
     import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@
     let isMobileMenuOpen = $state(false);
 
     const auth = $derived($page.props.auth);
+    const notifications = $derived($page.props.notifications as { unreadMessages?: number } | undefined);
 
     const navItems = [
         { href: '/products', label: t('common.products'), icon: LayoutGrid },
@@ -82,6 +83,17 @@
                     </div>
                         {#if auth.user}
                             <Link
+                                href={auth.user.is_admin ? '/creator/messages' : '/messages/inbox'}
+                                class="relative text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                            >
+                                {t('creator.nav_messages')}
+                                {#if notifications?.unreadMessages}
+                                    <span class="ml-2 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[11px] font-semibold text-primary-foreground">
+                                        {notifications.unreadMessages}
+                                    </span>
+                                {/if}
+                            </Link>
+                            <Link
                                 href={toUrl(dashboard())}
                                 class="text-sm font-semibold text-foreground transition-colors hover:text-primary"
                             >
@@ -113,6 +125,21 @@
                         <LanguageSwitcher />
                         <div class="flex flex-col gap-3">
                             {#if auth.user}
+                                <Link
+                                    href={auth.user.is_admin ? '/creator/messages' : '/messages/inbox'}
+                                    class="rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+                                    onclick={() => (isMobileMenuOpen = false)}
+                                >
+                                    <span class="inline-flex items-center gap-2">
+                                        <MessageCircleMore class="size-4" />
+                                        {t('creator.nav_messages')}
+                                        {#if notifications?.unreadMessages}
+                                            <span class="inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[11px] font-semibold text-primary-foreground">
+                                                {notifications.unreadMessages}
+                                            </span>
+                                        {/if}
+                                    </span>
+                                </Link>
                                 <Link
                                     href={toUrl(dashboard())}
                                     class="rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"

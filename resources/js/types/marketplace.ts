@@ -30,6 +30,8 @@ export type ShopCardData = {
 };
 
 export type ShopSummary = {
+    id?: number;
+    ownerId?: number;
     slug: string;
     name: string;
     city: string;
@@ -38,6 +40,7 @@ export type ShopSummary = {
 };
 
 export type ProductDetail = {
+    id?: number;
     slug: string;
     title: string;
     category: string;
@@ -51,6 +54,8 @@ export type ProductDetail = {
 };
 
 export type ShopDetail = {
+    id?: number;
+    ownerId?: number;
     slug: string;
     name: string;
     city: string;
@@ -118,11 +123,14 @@ export type CreatorShopProfile = {
 };
 
 export type CreatorMessageRow = {
+    id: number;
     subject: string;
     buyer: string;
     state: string;
     excerpt: string;
     createdAt?: string | null;
+    productTitle?: string | null;
+    unread?: boolean;
 };
 
 export type CreatorCategoryOption = {
@@ -133,4 +141,26 @@ export type CreatorCategoryOption = {
 export type CreatorStatusOption = {
     value: 'draft' | 'pending' | 'published';
     label: string;
+};
+
+export type CreatorMessageDetail = {
+    id: number;
+    subject: string;
+    buyer: string;
+    buyerEmail: string;
+    state: string;
+    createdAt?: string | null;
+    productTitle?: string | null;
+    productSlug?: string | null;
+    shopName?: string | null;
+    productId?: number | null;
+    participantId: number;
+    messages: Array<{
+        id: number;
+        body: string;
+        createdAt?: string | null;
+        senderName: string;
+        senderId: number;
+        fromCurrentUser: boolean;
+    }>;
 };

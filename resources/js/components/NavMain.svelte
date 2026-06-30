@@ -40,6 +40,11 @@
                                 <item.icon class="size-4 shrink-0" />
                             {/if}
                             <span>{item.title}</span>
+                            {#if item.badge && item.badge > 0}
+                                <span class="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[11px] font-semibold text-primary-foreground">
+                                    {item.badge}
+                                </span>
+                            {/if}
                         </Link>
                     {/snippet}
                 </SidebarMenuButton>

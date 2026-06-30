@@ -76,7 +76,13 @@
                     </div>
                 </div>
 
-                <ContactSellerCTA sellerName={shop.name} contextLabel="shop" />
+                <ContactSellerCTA
+                    sellerName={shop.name}
+                    contextLabel="shop"
+                    shopId={shop.id ?? 0}
+                    sellerUserId={shop.ownerId ?? null}
+                    subject={`${t('contact.shop_subject_prefix')}: ${shop.name}`}
+                />
             </div>
 
             <div class="space-y-6">

@@ -12,6 +12,7 @@ class Message extends Model
         'product_id',
         'subject',
         'message',
+        'status',
         'read_at',
     ];
 

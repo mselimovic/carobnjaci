@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\MessageController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('creator/products/{product}', [CreatorController::class, 'productUpdate'])->name('creator.products.update');
     Route::delete('creator/products/{product}', [CreatorController::class, 'productDestroy'])->name('creator.products.destroy');
     Route::get('creator/messages', [CreatorController::class, 'messages'])->name('creator.messages');
+    Route::get('creator/messages/{message}', [MessageController::class, 'show'])->name('creator.messages.show');
+    Route::post('creator/messages/{message}/reply', [MessageController::class, 'reply'])->name('creator.messages.reply');
+    Route::post('creator/messages/{message}/close', [MessageController::class, 'close'])->name('creator.messages.close');
     Route::inertia('creator/settings', 'Creator/Settings')->name('creator.settings');
+    Route::get('messages/inbox', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('messages/{message}', [MessageController::class, 'showPublic'])->name('messages.show');
+    Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
+    Route::post('messages/{message}/close', [MessageController::class, 'close'])->name('messages.close');
+    Route::post('messages', [MessageController::class, 'store'])->name('messages.store');
 });
 
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {

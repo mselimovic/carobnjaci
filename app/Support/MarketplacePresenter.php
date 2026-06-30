@@ -247,14 +247,75 @@ class MarketplacePresenter
 
     public static function creatorMessagesProps(User $user): array
     {
+        return [
+            'threads' => self::inboxThreadsProps($user),
+        ];
+    }
+
+    public static function inboxThreadsProps(User $user): Collection
+    {
         $messages = Message::query()
-            ->with(['sender', 'product'])
-            ->where('receiver_id', $user->id)
+            ->with(['sender', 'receiver', 'product'])
+            ->where(fn ($query) => $query
+                ->where('receiver_id', $user->id)
+                ->orWhere('sender_id', $user->id))
             ->latest()
             ->get();
 
+        return $messages
+            ->groupBy(fn (Message $message) => self::conversationKey($message))
+            ->map(function (Collection $threadMessages) use ($user) {
+                /** @var Message $latest */
+                $latest = $threadMessages->sortByDesc('created_at')->first();
+                $unreadCount = $threadMessages
+                    ->where('receiver_id', $user->id)
+                    ->whereNull('read_at')
+                    ->count();
+
+                return self::messageCard($latest, $user);
+            })
+            ->sortByDesc(fn (array $thread) => $thread['sortAt'] ?? '')
+            ->values();
+    }
+
+    public static function creatorMessageDetail(Message $message, User $viewer): array
+    {
+        $message->loadMissing(['sender', 'product.shop']);
+        $threadMessages = Message::query()
+            ->with(['sender', 'product.shop'])
+            ->where(fn ($query) => self::applyConversationScope($query, $message))
+            ->oldest()
+            ->get();
+
+        $counterpartyId = $message->sender_id === $viewer->id ? $message->receiver_id : $message->sender_id;
+        $counterparty = $counterpartyId === $message->sender_id ? $message->sender : $message->receiver;
+        $unreadCount = $threadMessages
+            ->where('receiver_id', $viewer->id)
+            ->whereNull('read_at')
+            ->count();
+
         return [
-            'threads' => $messages->map(fn (Message $message) => self::messageCard($message))->values(),
+            'id' => $message->id,
+            'subject' => $message->subject ?: self::messageSubject($message),
+            'buyer' => $counterparty?->name ?? '',
+            'buyerEmail' => $counterparty?->email ?? '',
+            'state' => $message->status === 'closed'
+                ? self::messageStatusLabel('closed')
+                : ($unreadCount > 0 ? self::label('creator.messages_new') : self::messageStatusLabel($message->status)),
+            'createdAt' => $message->created_at?->diffForHumans(),
+            'productTitle' => $message->product?->title,
+            'productSlug' => $message->product?->slug,
+            'productId' => $message->product?->id,
+            'shopName' => $message->product?->shop?->name,
+            'participantId' => $counterpartyId,
+            'messages' => $threadMessages->map(fn (Message $item) => [
+                'id' => $item->id,
+                'body' => $item->message,
+                'createdAt' => $item->created_at?->diffForHumans(),
+                'senderName' => $item->sender?->name ?? '',
+                'senderId' => $item->sender_id,
+                'fromCurrentUser' => $item->sender_id === $viewer->id,
+            ])->values(),
         ];
     }
 
@@ -263,6 +324,7 @@ class MarketplacePresenter
         $product->loadMissing(['shop', 'category', 'images']);
 
         return [
+            'id' => $product->id,
             'slug' => $product->slug,
             'title' => $product->title,
             'shop' => $product->shop?->name ?? '',
@@ -280,6 +342,8 @@ class MarketplacePresenter
         $shop->loadMissing('products');
 
         return [
+            'id' => $shop->id,
+            'ownerId' => $shop->user_id,
             'slug' => $shop->slug,
             'name' => $shop->name,
             'city' => $shop->city ?? 'Bosnia and Herzegovina',
@@ -334,6 +398,8 @@ class MarketplacePresenter
         $publishedCount = $shop->products->count();
 
         return [
+            'id' => $shop->id,
+            'ownerId' => $shop->user_id,
             'slug' => $shop->slug,
             'name' => $shop->name,
             'city' => $shop->city ?? 'Bosnia and Herzegovina',
@@ -431,14 +497,23 @@ class MarketplacePresenter
         ];
     }
 
-    public static function messageCard(Message $message): array
+    public static function messageCard(Message $message, ?User $viewer = null): array
     {
+        $viewer ??= $message->receiver;
+        $counterparty = $viewer && $message->sender_id === $viewer->id
+            ? $message->receiver
+            : $message->sender;
+
         return [
+            'id' => $message->id,
             'subject' => $message->subject ?: self::messageSubject($message),
-            'buyer' => $message->sender?->name ?? '',
-            'state' => $message->read_at ? self::label('creator.messages_replied') : self::label('creator.messages_new'),
+            'buyer' => $counterparty?->name ?? ($message->sender?->name ?? ''),
+            'state' => self::messageStatusLabel($message->status),
             'excerpt' => Str::limit($message->message, 120),
             'createdAt' => $message->created_at?->diffForHumans(),
+            'productTitle' => $message->product?->title,
+            'unread' => $viewer ? ($message->receiver_id === $viewer->id && $message->read_at === null) : $message->read_at === null,
+            'sortAt' => $message->created_at?->toIso8601String(),
         ];
     }
 
@@ -661,5 +736,44 @@ class MarketplacePresenter
             ['local_workshop', 'en'] => 'Local workshop',
             default => Str::headline($key),
         };
+    }
+
+    protected static function messageStatusLabel(string $status): string
+    {
+        return match ([$status, app()->getLocale()]) {
+            ['awaiting_seller', 'bs'] => 'Ceka prodavca',
+            ['awaiting_buyer', 'bs'] => 'Ceka kupca',
+            ['closed', 'bs'] => 'Zatvoreno',
+            ['awaiting_seller', 'en'] => 'Awaiting seller',
+            ['awaiting_buyer', 'en'] => 'Awaiting buyer',
+            ['closed', 'en'] => 'Closed',
+            default => Str::headline(str_replace('_', ' ', $status)),
+        };
+    }
+
+    public static function conversationKey(Message $message): string
+    {
+        $participants = collect([$message->sender_id, $message->receiver_id])->sort()->implode('-');
+        $product = $message->product_id ?? 'shop';
+        $subject = $message->subject ?? '';
+
+        return "{$participants}|{$product}|{$subject}";
+    }
+
+    public static function applyConversationScope($query, Message $message)
+    {
+        $participantIds = [$message->sender_id, $message->receiver_id];
+
+        return $query
+            ->whereIn('sender_id', $participantIds)
+            ->whereIn('receiver_id', $participantIds)
+            ->where('subject', $message->subject)
+            ->where(function ($subQuery) use ($message) {
+                if ($message->product_id) {
+                    $subQuery->where('product_id', $message->product_id);
+                } else {
+                    $subQuery->whereNull('product_id');
+                }
+            });
     }
 }
